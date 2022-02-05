@@ -1,4 +1,4 @@
-import isEqual from'fast-deep-equal/es6';import React,{useRef,useState,useEffect,useContext}from'react';import produce$1,{enablePatches,produceWithPatches,produce,applyPatches}from'immer';function useStoreState(store, getSubState, deps) {
+import isEqual from 'fast-deep-equal/es6'; import React, { useRef, useState, useEffect, useContext } from 'react'; import produce$1, { enablePatches, produceWithPatches, produce, applyPatches } from 'immer'; function useStoreState(store, getSubState, deps) {
     const updateRef = useRef({ state: undefined, initialized: false });
     if (!updateRef.current.initialized) {
         updateRef.current.state = getSubState ? getSubState(store.getRawState()) : store.getRawState();
@@ -34,7 +34,7 @@ import isEqual from'fast-deep-equal/es6';import React,{useRef,useState,useEffect
         }
     }
     return updateRef.current.state;
-}let updateListenerOrd = 0;
+} let updateListenerOrd = 0;
 function fastGet(obj, path) {
     return path.reduce((cur = obj, key) => {
         return cur[key];
@@ -70,7 +70,7 @@ function useStoreStateOpt(store, paths) {
         store._removeUpdateListenerOpt(updateRef.current.ordKey);
     }, []);
     return subState;
-}function useLocalStore(initialState, deps) {
+} function useLocalStore(initialState, deps) {
     const storeRef = useRef();
     if (storeRef.current == null) {
         storeRef.current = new Store(initialState);
@@ -82,11 +82,11 @@ function useStoreStateOpt(store, paths) {
         }
     }
     return storeRef.current;
-}const globalClientState = {
+} const globalClientState = {
     storeOrdinal: 0,
     batching: false,
     flushStores: {}
-};enablePatches();
+}; enablePatches();
 function makeSubscriptionFunction(store, watch, listener) {
     let lastWatchState = watch(store.getRawState());
     return () => {
@@ -389,10 +389,10 @@ function update(store, updater, patchesCallback) {
             store._updateState(nextState);
         }
     }
-}function InjectStoreState({ store, on = s => s, children, }) {
+} function InjectStoreState({ store, on = s => s, children, }) {
     const state = useStoreState(store, on);
     return children(state);
-}var EAsyncEndTags;
+} var EAsyncEndTags;
 (function (EAsyncEndTags) {
     EAsyncEndTags["THREW_ERROR"] = "THREW_ERROR";
     EAsyncEndTags["RETURNED_ERROR"] = "RETURNED_ERROR";
@@ -410,7 +410,7 @@ var EPostActionContext;
     EPostActionContext["DIRECT_RUN"] = "DIRECT_RUN";
     EPostActionContext["BECKON_RUN"] = "BECKON_RUN";
     EPostActionContext["CACHE_UPDATE"] = "CACHE_UPDATE";
-})(EPostActionContext || (EPostActionContext = {}));const clientAsyncCache = {
+})(EPostActionContext || (EPostActionContext = {})); const clientAsyncCache = {
     listeners: {},
     results: {},
     actions: {},
@@ -502,7 +502,7 @@ If this error occurred on the client:
         }
     });
 }
-catch {
+catch (error) {
     storeErrorProxy = {};
 }
 const startedButUnfinishedResult = [
@@ -612,40 +612,40 @@ further looping. Fix in your cacheBreakHook() is needed.`);
     function createInternalAction(key, cache, args, stores, currentActionOrd, postActionEnabled, executionContext, customContext) {
         return () => action(args, stores, customContext)
             .then((resp) => {
-            if (currentActionOrd === cache.actionOrd[key]) {
-                if (postActionEnabled) {
-                    runPostActionHook(resp, args, stores, executionContext);
+                if (currentActionOrd === cache.actionOrd[key]) {
+                    if (postActionEnabled) {
+                        runPostActionHook(resp, args, stores, executionContext);
+                    }
+                    cache.results[key] = [true, true, resp, false, Date.now()];
                 }
-                cache.results[key] = [true, true, resp, false, Date.now()];
-            }
-            return resp;
-        })
+                return resp;
+            })
             .catch((e) => {
-            console.error(e);
-            const result = {
-                payload: null,
-                errorPayload: null,
-                error: true,
-                tags: [EAsyncEndTags.THREW_ERROR],
-                message: e.message
-            };
-            if (currentActionOrd === cache.actionOrd[key]) {
-                if (postActionEnabled) {
-                    runPostActionHook(result, args, stores, executionContext);
+                console.error(e);
+                const result = {
+                    payload: null,
+                    errorPayload: null,
+                    error: true,
+                    tags: [EAsyncEndTags.THREW_ERROR],
+                    message: e.message
+                };
+                if (currentActionOrd === cache.actionOrd[key]) {
+                    if (postActionEnabled) {
+                        runPostActionHook(result, args, stores, executionContext);
+                    }
+                    cache.results[key] = [true, true, result, false, Date.now()];
                 }
-                cache.results[key] = [true, true, result, false, Date.now()];
-            }
-            return result;
-        })
+                return result;
+            })
             .then((resp) => {
-            if (currentActionOrd === cache.actionOrd[key]) {
-                delete cache.actions[key];
-                if (!onServer) {
-                    notifyListeners(key);
+                if (currentActionOrd === cache.actionOrd[key]) {
+                    delete cache.actions[key];
+                    if (!onServer) {
+                        notifyListeners(key);
+                    }
                 }
-            }
-            return resp;
-        });
+                return resp;
+            });
     }
     function checkKeyAndReturnResponse({ key, cache, initiate, ssr, args, stores, fromListener = false, postActionEnabled = true, cacheBreakEnabled = true, holdingResult, customContext, customCacheBreak, holdPrevious }) {
         const cached = getCachedResult({
@@ -1340,7 +1340,7 @@ further looping. Fix in your cacheBreakHook() is needed.`);
         setCachedPayload,
         updateCached
     };
-}const PullstateContext = React.createContext(null);
+} const PullstateContext = React.createContext(null);
 const PullstateProvider = ({ instance, children }) => {
     return React.createElement(PullstateContext.Provider, { value: instance }, children);
 };
@@ -1477,7 +1477,7 @@ function useStores() {
 }
 function useInstance() {
     return useContext(PullstateContext);
-}var EAsyncActionInjectType;
+} var EAsyncActionInjectType;
 (function (EAsyncActionInjectType) {
     EAsyncActionInjectType["WATCH"] = "watch";
     EAsyncActionInjectType["BECKON"] = "beckon";
@@ -1489,10 +1489,10 @@ function InjectAsyncAction(props) {
     }
     const response = props.action.useWatch(props.args, props.options);
     return props.children(response);
-}function InjectStoreStateOpt({ store, paths, children }) {
+} function InjectStoreStateOpt({ store, paths, children }) {
     const state = useStoreStateOpt(store, paths);
     return children(state);
-}function registerInDevtools(stores, { namespace = "" } = {}) {
+} function registerInDevtools(stores, { namespace = "" } = {}) {
     var _a;
     const devToolsExtension = typeof window !== "undefined" ? (_a = window) === null || _a === void 0 ? void 0 : _a.__REDUX_DEVTOOLS_EXTENSION__ : undefined;
     if (devToolsExtension) {
@@ -1517,7 +1517,7 @@ function InjectAsyncAction(props) {
             });
         }
     }
-}const batchState = {};
+} const batchState = {};
 function setupBatch({ uiBatchFunction }) {
     batchState.uiBatchFunction = uiBatchFunction;
 }
@@ -1542,4 +1542,4 @@ function batch(runUpdates) {
         globalClientState.flushStores = {};
         globalClientState.batching = false;
     }
-}export{EAsyncActionInjectType,EAsyncEndTags,EPostActionContext,InjectAsyncAction,InjectStoreState,InjectStoreStateOpt,PullstateContext,PullstateProvider,Store,batch,createAsyncAction,createAsyncActionDirect,createPullstateCore,errorResult,registerInDevtools,setupBatch,successResult,update,useInstance,useLocalStore,useStoreState,useStoreStateOpt,useStores};
+} export { EAsyncActionInjectType, EAsyncEndTags, EPostActionContext, InjectAsyncAction, InjectStoreState, InjectStoreStateOpt, PullstateContext, PullstateProvider, Store, batch, createAsyncAction, createAsyncActionDirect, createPullstateCore, errorResult, registerInDevtools, setupBatch, successResult, update, useInstance, useLocalStore, useStoreState, useStoreStateOpt, useStores };
